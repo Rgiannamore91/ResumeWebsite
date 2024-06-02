@@ -21,5 +21,15 @@
 </html> -->
 {% extends "build/base.html" %}
 
+{% block head %}
+<title>{{first}}'s Resume</title>
+{% endblock %}
+
+{% block header%}
+<nav class="navbar navbar-inverse">
+    <h1>{{ first }} {{ last }}</h1>
+</nav>  
+{% endblock %}
+
 {% block content %}
 {% endblock %}
