@@ -30,6 +30,16 @@
     <h1>{{ first }} {{ last }}</h1>
 </nav>  
 {% endblock %}
-
+{% load static %}
 {% block content %}
+{% for job in jobs %}
+{% endfor %}
+{% for education in education_list %}
+{% endfor %}
+{% for project in projects %}
+{% endfor %}
+{% for skill in skills %}
+{% endfor %}
+{% for certificates in certificates %}
+{% endfor %}
 {% endblock %}
