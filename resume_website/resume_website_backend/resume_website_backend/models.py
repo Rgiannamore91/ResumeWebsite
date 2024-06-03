@@ -8,6 +8,9 @@ class Job(models.Model):
     duration = models.DurationField(blank=True, null=True)
     description = models.TextField()
 
+    class Meta:
+        ordering = ["from_date"]
+
 class Education(models.Model):
     school = models.CharField(max_length=50)
     major = models.CharField(max_length=50)
@@ -15,6 +18,9 @@ class Education(models.Model):
     to_date = models.DateField()
     duration = models.DurationField(blank=True, null=True)
     description = models.TextField()
+
+    class Meta:
+        ordering = ["from_date"]
 
 class Project(models.Model):
     project_name = models.CharField(max_length=50)
