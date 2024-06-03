@@ -14,9 +14,6 @@ class Job(models.Model):
     def __str__(self):
         return  f"Job Title: {self.job_title}, Company: {self.company}"            
 
-            
-        
-
 class Education(models.Model):
     school = models.CharField(max_length=50)
     major = models.CharField(max_length=50)
@@ -46,7 +43,7 @@ class Skill(models.Model):
     def __str__(self):
         return f"Skill: {self.name}"
 
-class Certificate(models.Moedl):
+class Certificate(models.Model):
     name = models.CharField(max_length=50)
     school = models.CharField(max_length=50)
     link = models.URLField(max_length=500)
