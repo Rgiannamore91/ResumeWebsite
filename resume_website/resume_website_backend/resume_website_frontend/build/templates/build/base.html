@@ -7,12 +7,13 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         {% block head %}
-        {% endblock %}
-        {% with firstName = "Ryan" %}
-        <title>{{firstName}}'s Resume</title>
-        {% endwith %}
+        {% endblock %}          
     </head>
     <body>
+        <header>
+            {% block header%}
+            {% endblock %}
+        </header>
         {% block content %}
         {% endblock %}
     </body>
