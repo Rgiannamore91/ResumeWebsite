@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from .models import *
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView
 firstName = "Ryan"
 lastName = "Giannamore"
 
@@ -23,4 +26,5 @@ def index(request):
         "certificates": certificates,
     }
     return render(request, 'build/index.html', context)
+
 
