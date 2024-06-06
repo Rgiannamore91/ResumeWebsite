@@ -1,8 +1,19 @@
 from django.db import models
-from datetime import timedelta, datetime
+from datetime import datetime
+from django.core.validators import MinLengthValidator, RegexValidator
 
-class Summary(models.Model):
-    body = models.TextField()
+class Details(models.Model):
+    first = models.CharField(max_length=50)
+    last = models.CharField(max_length=50)
+    phone = models.CharField(
+        max_length=10, 
+        validators=[
+            MinLengthValidator(10), 
+            RegexValidator(r'^\d+$', 'Only numbers allowed')
+        ]
+    )
+    email = models.CharField(max_length=50)
+    summary = models.TextField()
 
 class Job(models.Model):
     job_title = models.CharField(max_length=50)
