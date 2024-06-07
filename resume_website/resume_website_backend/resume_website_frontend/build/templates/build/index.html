@@ -22,24 +22,48 @@
 {% extends "build/base.html" %}
 
 {% block head %}
-<title>{{first}}'s Resume</title>
+<title>{{ details.first }}'s Resume</title>
 {% endblock %}
 
 {% block header%}
 <nav class="navbar navbar-inverse">
-    <h1>{{ first }} {{ last }}</h1>
+    <h1>{{ details.first }} {{ details.last }}</h1>
 </nav>  
 {% endblock %}
 {% load static %}
 {% block content %}
+<ul>
+    <li><p>{{details.phone}}</p></li>
+    <li><p>{{details.email}}</p></li>
+</ul>
+<h1>Summary</h1>
+<p>{{details.summary}}</p>
+<h1>Work Experience</h1>
 {% for job in jobs %}
+<ul>
+    <li><p>{{job.job_title}}</p></li>
+    <li><p>{{job.company}}</p></li>
+    {% if job.to_date == Null %}
+    <li><p>{{job.from_date}} to present</p></li>
+    {% else %}
+    <li><p>{{job.from_date}} to {{job.to_date}}</p></li>
+    {% endif %}
+    <li>{{job.duration_str}}</li>
+</ul>
 {% endfor %}
+<h1>Education</h1>
 {% for education in education_list %}
+<ul>
+
+</ul>
 {% endfor %}
+<h1>Projects</h1>
 {% for project in projects %}
 {% endfor %}
+<h1>Skills</h1>
 {% for skill in skills %}
 {% endfor %}
+<h1>Certificates</h1>
 {% for certificates in certificates %}
 {% endfor %}
 {% endblock %}

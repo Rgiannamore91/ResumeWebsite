@@ -1,8 +1,24 @@
 from django.db import models
 from datetime import datetime
-from django.core.validators import MinLengthValidator, RegexValidator
+from django.core.validators import MinLengthValidator, RegexValidator, EmailValidator
+from django.core.exceptions import ValidationError
 
-class Details(models.Model):
+class DetailsModel(models.Model):
+    class Meta:
+        abstract = True
+    def save(self, *args, **kwargs):
+        if not self.pk and self.__class__.objects.exists():
+            raise ValidationError(
+                f"There can be only one {self.__class__.__name__}, delete current instance in order to create a new one."
+                )
+        return super().save(*args, **kwargs)
+    
+    @classmethod
+    def load(cls):
+        obj, created = cls.objects.get_or_create(pk=1)
+        
+
+class Details(DetailsModel):
     first = models.CharField(max_length=50)
     last = models.CharField(max_length=50)
     phone = models.CharField(
@@ -12,7 +28,10 @@ class Details(models.Model):
             RegexValidator(r'^\d+$', 'Only numbers allowed')
         ]
     )
-    email = models.CharField(max_length=50)
+    email = models.CharField(
+        max_length=254, 
+        validators=[EmailValidator(message='Enter a valid email address.')]
+    )
     summary = models.TextField()
 
 class Job(models.Model):
@@ -24,12 +43,21 @@ class Job(models.Model):
     description = models.TextField()
 
     def save(self, *args, **kwargs):
-        if self.to_date is None:
-            self.duration = datetime.now() - self.from_date
-        else:
-            self.duration = self.to_date - self.from_date
+        if self.from_date:
+            if self.to_date is None:
+                duration_days = (datetime.now().date() - self.from_date).days
+            else:
+                duration_days = (self.to_date - self.from_date).days
+            
+            years = duration_days // 365
+            months = (duration_days % 365) // 30
 
-        super().save(*args, **kwargs)
+            if years > 0:
+                self.duration_str = f'{years} years, {months} months' if months > 0 else f'{years} years'
+            else:
+                self.duration_str = f'{months} months'
+            self.duration = datetime.now().date() - self.from_date 
+        super(Job, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ["from_date"]
@@ -57,7 +85,7 @@ class Education(models.Model):
 
     def save(self, *args, **kwargs):
         if self.to_date is None:
-            self.duration = datetime.now() - self.from_date
+            self.duration = datetime.now().date() - self.from_date
         else:
             self.duration = self.to_date - self.from_date
 
