@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.core.validators import MinLengthValidator, RegexValidator, EmailValidator
 from django.core.exceptions import ValidationError
 
@@ -32,6 +32,9 @@ class Details(DetailsModel):
         max_length=254, 
         validators=[EmailValidator(message='Enter a valid email address.')]
     )
+    city = models.CharField(max_length=50, default="New York")
+    state = models.CharField(max_length=2, default="NY")
+    social_link = models.URLField(max_length=500, null=True, blank=True)
     summary = models.TextField()
 
 class Job(models.Model):
@@ -40,6 +43,7 @@ class Job(models.Model):
     from_date = models.DateField()
     to_date = models.DateField(blank=True, null=True)
     duration = models.DurationField(editable=False, blank=True, null=True)
+    duration_str = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField()
 
     def save(self, *args, **kwargs):
@@ -56,11 +60,13 @@ class Job(models.Model):
                 self.duration_str = f'{years} years, {months} months' if months > 0 else f'{years} years'
             else:
                 self.duration_str = f'{months} months'
-            self.duration = datetime.now().date() - self.from_date 
+            self.duration = timedelta(days=duration_days)
+        else:
+            self.duration_str = 'N/A'
         super(Job, self).save(*args, **kwargs)
 
     class Meta:
-        ordering = ["from_date"]
+        ordering = ["-from_date"]
 
     def __str__(self):
         return  f"Job Title: {self.job_title}, Company: {self.company}"  
@@ -80,9 +86,8 @@ class Education(models.Model):
     major = models.CharField(max_length=50)
     from_date = models.DateField()
     to_date = models.DateField(blank=True, null=True)
-    duration = models.DurationField(editable=False, blank=True, null=True)
-    description = models.TextField()
-
+    degree = models.CharField(max_length=50, default="Bachelor of Science")
+    course_structure = models.URLField(max_length=500, null=True, blank=True)
     def save(self, *args, **kwargs):
         if self.to_date is None:
             self.duration = datetime.now().date() - self.from_date
@@ -92,7 +97,7 @@ class Education(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        ordering = ["from_date"]
+        ordering = ["-from_date"]
 
     def __str__(self):
         return f"School: {self.school}, Major: {self.major}"
@@ -110,14 +115,26 @@ class Education(models.Model):
 class Project(models.Model):
     project_name = models.CharField(max_length=50)
     org = models.CharField(max_length=50)
+    role = models.CharField(max_length=50, default="Developer")
     description = models.TextField()
 
     def __str__(self):
-        return f"Projec Name: {self.project_name}, For: {self.org}"
+        return f"Project Name: {self.project_name}, For: {self.org}"
+    
+class Language(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"Skill: {self.name}"
+
+class FrameWork(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"Skill: {self.name}" 
 
 class Skill(models.Model):
     name = models.CharField(max_length=50)
-    description = models.TextField()
 
     def __str__(self):
         return f"Skill: {self.name}"
@@ -125,7 +142,10 @@ class Skill(models.Model):
 class Certificate(models.Model):
     name = models.CharField(max_length=50)
     school = models.CharField(max_length=50)
-    link = models.URLField(max_length=500)
+    link = models.URLField(max_length=500, null=True, blank=True)
+    date = models.DateField(blank=True, null=True)
+    class Meta:
+        ordering = ["-date"]
 
     def __str__(self):
         return f"Certificate: {self.name}, School: {self.school}"

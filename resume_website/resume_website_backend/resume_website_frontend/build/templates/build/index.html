@@ -32,38 +32,50 @@
 {% endblock %}
 {% load static %}
 {% block content %}
-<ul>
-    <li><p>{{details.phone}}</p></li>
-    <li><p>{{details.email}}</p></li>
-</ul>
+<p>Contact: {{details.email}} | {{details.phone}}</p>
+<p>Location: {{details.city}}, {{details.state}}</p>
+<p>Social: <a href="{{details.social_link}}">LinkedIn</a></p>
 <h1>Summary</h1>
 <p>{{details.summary}}</p>
 <h1>Work Experience</h1>
 {% for job in jobs %}
-<ul>
-    <li><p>{{job.job_title}}</p></li>
-    <li><p>{{job.company}}</p></li>
-    {% if job.to_date == Null %}
-    <li><p>{{job.from_date}} to present</p></li>
-    {% else %}
-    <li><p>{{job.from_date}} to {{job.to_date}}</p></li>
-    {% endif %}
-    <li>{{job.duration_str}}</li>
-</ul>
+<p>{{job.company}} - {{job.job_title}}</p>
+{% if job.to_date == Null %}
+<p>{{job.from_date}} to present, {{job.duration_str}}</p>
+{% else %}
+<p>{{job.from_date}} to {{job.to_date}}, {{job.duration_str}}</p>
+{% endif %}
 {% endfor %}
 <h1>Education</h1>
 {% for education in education_list %}
-<ul>
-
-</ul>
+<p>{{education.school}} - {{education.degree}}, <a href="{{education.course_structure}}">{{education.major}}</a></p>
+<p>{{education.from_date}} to {{education.to_date}}</p>
 {% endfor %}
 <h1>Projects</h1>
 {% for project in projects %}
+<p>{{project.org}} - {{project.project_name}}, {{project.role}}</p>
 {% endfor %}
 <h1>Skills</h1>
-{% for skill in skills %}
-{% endfor %}
+<h4>Languages</h4>
+<p>{{languages_str}}</p>
+<h4>Frameworks and Libraries</h4>
+<p>{{frameworks_str}}</p>
+<h4>Skills</h4>
+<p>{{skills_str}}</p>
 <h1>Certificates</h1>
-{% for certificates in certificates %}
-{% endfor %}
+<table>
+    <tr>
+        <th>School/Institution</th>
+        <th>Certificate</th>
+        <th>Date Obtained</th>
+    </tr>
+    {% for certificate in certificates %}
+    <tr>
+        <td>{{certificate.school}}</td>
+        <td><a href="{{certificate.link}}">{{certificate.name}}</a></td>
+        <td>{{certificate.date}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
 {% endblock %}
