@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import *
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
@@ -24,7 +24,6 @@ def index(request):
     for skill in skills:
         skills_str += f"{skill.name}; "
     projects = Project.objects.all()
-    certificates = Certificate.objects.all()
     context = {
         "details": details,
         "jobs": jobs,
@@ -33,8 +32,26 @@ def index(request):
         "frameworks_str": frameworks_str,
         "skills_str": skills_str,
         "projects": projects,
-        "certificates": certificates,
     }
     return render(request, 'build/index.html', context)
 
+def work_experience(request, job_id):
+    job = get_object_or_404(Job, pk=job_id)
+    context = {
+        "job": job,
+    }
+    return render(request, 'build/work_experience.html', context)
 
+def project_detail(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    context = {
+        "project": project,
+    }
+    return render(request, 'build/project_detail.html', context)
+
+def certificate_page(request):
+    certificates = Certificate.objects.all()
+    context = {
+        "certificates": certificates,
+    }
+    return render(request, 'build/certificate_page.html', context)

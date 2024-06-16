@@ -39,7 +39,7 @@
 <p>{{details.summary}}</p>
 <h1>Work Experience</h1>
 {% for job in jobs %}
-<p>{{job.company}} - {{job.job_title}}</p>
+<p>{{job.company}} - <a href="{% url 'work_experience' job.id %}">{{job.job_title}}</a></p>
 {% if job.to_date == Null %}
 <p>{{job.from_date}} to present, {{job.duration_str}}</p>
 {% else %}
@@ -53,7 +53,8 @@
 {% endfor %}
 <h1>Projects</h1>
 {% for project in projects %}
-<p>{{project.org}} - {{project.project_name}}, {{project.role}}</p>
+<p>{{project.org}} - <a href="{% url 'project_detail' project.id %}">{{project.project_name}}</a>, {{project.role}}</p>
+<p><a href="{{project.github}}">GitHub</a></p>
 {% endfor %}
 <h1>Skills</h1>
 <h4>Languages</h4>
@@ -62,20 +63,5 @@
 <p>{{frameworks_str}}</p>
 <h4>Skills</h4>
 <p>{{skills_str}}</p>
-<h1>Certificates</h1>
-<table>
-    <tr>
-        <th>School/Institution</th>
-        <th>Certificate</th>
-        <th>Date Obtained</th>
-    </tr>
-    {% for certificate in certificates %}
-    <tr>
-        <td>{{certificate.school}}</td>
-        <td><a href="{{certificate.link}}">{{certificate.name}}</a></td>
-        <td>{{certificate.date}}</td>
-    </tr>
-    {% endfor %}
-</table>
-
+<h1><a href="{% url 'certificate_page' %}">Certificates</a></h1>
 {% endblock %}
