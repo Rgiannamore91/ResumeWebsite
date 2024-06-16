@@ -1,1 +1,24 @@
 {% extends "build/base.html" %}
+
+{% block head %}
+<title>{{ job.job_title }} at {{ job.company}}</title>
+{% endblock %}
+
+{% block header %}
+<nav class="navbar navbar-inverse">
+    <h1>{{ job.job_title }} at {{ job.company}}</h1>
+</nav>  
+{% endblock %}
+
+{% load static %}
+
+{%block content%}
+<p>{{job.company}} - {{job.job_title}}</p>
+{% if job.to_date == Null %}
+<p>{{job.from_date}} to present, {{job.duration_str}}</p>
+{% else %}
+<p>{{job.from_date}} to {{job.to_date}}, {{job.duration_str}}</p>
+<p>{{job.description}}</p>
+{% endif %}
+<a href="{% url 'index' %}">Home</a>
+{% endblock %}

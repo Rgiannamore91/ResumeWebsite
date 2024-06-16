@@ -21,4 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('base/', views.base, name='base'),
+    path('job/<int:job_id>', views.work_experience, name='work_experience'),
+    path('project/<int:project_id>', views.project_detail, name='project_detail'),
+    path('certificate_page/', views.certificate_page, name='certificate_page')
 ]

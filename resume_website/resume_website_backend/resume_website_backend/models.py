@@ -66,7 +66,7 @@ class Job(models.Model):
         super(Job, self).save(*args, **kwargs)
 
     class Meta:
-        ordering = ["-from_date"]
+        ordering = ["from_date"]
 
     def __str__(self):
         return  f"Job Title: {self.job_title}, Company: {self.company}"  
@@ -117,6 +117,7 @@ class Project(models.Model):
     org = models.CharField(max_length=50)
     role = models.CharField(max_length=50, default="Developer")
     description = models.TextField()
+    github = models.URLField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return f"Project Name: {self.project_name}, For: {self.org}"

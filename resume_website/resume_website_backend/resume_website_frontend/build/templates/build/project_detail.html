@@ -1,0 +1,20 @@
+{% extends "build/base.html" %}
+
+{% block head %}
+<title>{{ project.name }}</title>
+{% endblock %}
+
+{% block header %}
+<nav class="navbar navbar-inverse">
+    <h1>{{ project.name }}</h1>
+</nav>  
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<p>{{project.org}} - {{project.project_name}}, {{project.role}}</p>
+<p><a href="{{project.github}}">GitHub</a></p>
+<p>{{project.description}}</p>
+<a href="{% url 'index' %}">Home</a>
+{% endblock %}
