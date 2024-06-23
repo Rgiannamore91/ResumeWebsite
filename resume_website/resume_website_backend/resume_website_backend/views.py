@@ -1,8 +1,156 @@
-from django.shortcuts import render, get_object_or_404
+"""from django.shortcuts import render, get_object_or_404
 from .models import *
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
+"""
+from django.shortcuts import render
+from rest_framework.views import APIView
+from . serializers import *
+from . models import *
+from rest_framework.response import Response
 
+
+class DetailsList(APIView):
+    def get(self, request):
+        output = [
+            {
+                "first": output.first,
+                "last": output.last,
+                "phone": output.phone,
+                "email": output.email,
+                "city": output.city,
+                "state": output.state,
+                "social_link": output.social_link,
+                "summary": output.summary,
+            }
+            for output in Details.objects.all()
+        ]
+        return Response(output)
+    
+    def post(self, request):
+        serializer = DetailsSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+
+class JobList(APIView):
+    def get(self, request):
+        output = [
+            {
+                "job_title": output.job_title,
+                "company": output.company,
+                "from_date": output.from_date,
+                "to_date": output.to_date,
+                "duration": output.duration,
+                "duration_str": output.duration_str,
+                "description": output.description,
+            }
+            for output in Job.objects.all()
+        ]
+        return Response(output)
+    
+    def post(self, request):
+        serializer = JobSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+    
+class EducationList(APIView):
+    def get(self, request):
+        output = [
+            {
+                "school": output.school,
+                "major": output.major,
+                "from_date": output.from_date,
+                "to_date": output.to_date,
+                "degree": output.degree,
+                "course_structure": output.course_structure,
+            }
+            for output in Education.objects.all()
+        ]
+        return Response(output)
+    
+    def post(self, request):
+        serializer = EducationSerializer(data=request.data)
+
+     
+
+class ProjectList(APIView):
+    def get(self, request):
+        output = [
+            {
+                "project_name": output.project_name,
+                "org": output.org,
+                "role": output.role,
+                "description": output.description,
+                "github": output.github,
+            }
+            for output in Project.objects.all()
+        ]
+        return Response(output)
+    def post(self, request):
+        serializer = ProjectSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)   
+
+class LanguageList(APIView):
+    def get(self, request):
+        output = [
+            {"name": output.name}
+            for output in Language.objects.all()
+        ]
+        return Response(output)
+    def post(self, request):
+        serializer = LanguageSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data) 
+
+class FrameWorkList(APIView):
+    def get(self, request):
+        output = [
+            {"name": output.name}
+            for output in FrameWork.objects.all()
+        ]
+
+    def post(self, request):
+        serializer = FrameWorkSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)  
+
+class SkillList(APIView):
+    def get(self, request):
+        output = [
+            {"name": output.name}
+            for output in Skill.objects.all()
+        ]
+    def post(self, request):
+        serializer = SkillSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)  
+        
+class CertificateList(APIView):
+    def get(self, request):
+        output = [
+            {
+                "name": output.name,
+                "school": output.school,
+                "link": output.link,
+                "date": output.date,
+            }
+        ] 
+
+    def post(self, request):
+        serializer = CertificateSerializer(data=request.data)     
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)  
+        
+
+"""
 def base(request):
     return render(request, 'build/base.html')
 
@@ -55,3 +203,4 @@ def certificate_page(request):
         "certificates": certificates,
     }
     return render(request, 'build/certificate_page.html', context)
+"""
